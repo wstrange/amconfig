@@ -7,6 +7,7 @@ import 'package:di/di.dart';
 import 'package:yaml/yaml.dart';
 import 'dart:io';
 import 'dart:convert';
+import 'dart:async';
 
 main(List<String> arguments) async {
   Logger.root.level = Level.FINE;
@@ -54,21 +55,22 @@ main(List<String> arguments) async {
 
   sleep(new Duration(seconds: 20));
 
-  createPolicies(policyFile, policyAdmin);
+  await createPolicies(policyFile, policyAdmin);
 }
 
-createPolicies(String policyFile, PolicyAdmin policyAdmin) {
+Future createPolicies(String policyFile, PolicyAdmin policyAdmin) async {
   var yml = new File(policyFile).readAsStringSync();
 
   log.info("Loading policies: \n $yml");
 
-  var p = loadYaml(yml);
-  log.fine("Loaded yml = $p");
+  var policyList = loadYaml(yml) as List;
+  log.fine("Loaded yml = $policyList");
 
-  p.forEach((o) async {
-    var j = JSON.encode(o);
 
-    log.info("encoded = $j");
+  await Future.forEach(policyList, (policy) async {
+    var j = JSON.encode(policy);
+    log.fine("encoded to json = $j");
     var r = await policyAdmin.createPolicy(j);
+    log.fine("Policy create result =  ${r.statusCode} ${r.reasonPhrase}");
   });
 }
