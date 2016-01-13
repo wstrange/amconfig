@@ -81,7 +81,7 @@ class PolicyAdmin {
   Future<Response> createPolicy(String policy) async {
     Response r =
         await _am.post("/json/policies", {"_action": "create"}, policy);
-    _log.info("create result= ${r.statusCode} ${r.reasonPhrase}");
+    _log.fine("create result= ${r.statusCode} ${r.reasonPhrase}");
     return r;
   }
 }

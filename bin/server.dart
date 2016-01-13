@@ -9,7 +9,7 @@ import 'dart:io';
 import 'dart:convert';
 
 main(List<String> arguments) async {
-  Logger.root.level = Level.INFO;
+  Logger.root.level = Level.FINE;
   Logger.root.onRecord.listen((LogRecord rec) {
     print('${rec.level.name}: ${rec.time}: ${rec.message}');
   });
@@ -43,10 +43,16 @@ main(List<String> arguments) async {
   PolicyAdmin policyAdmin = injector.get(PolicyAdmin);
 
   var a = await policyAdmin.listPolicies();
-  a.forEach((p) => log.info("got policy $p"));
+  a.forEach((p) => log.fine("got policy $p"));
 
   var rt = await policyAdmin.listResourceTypes();
-  rt.forEach((r) => log.info("RT = $r"));
+  rt.forEach((r) => log.fine("RT = $r"));
+
+  // The policy file is checked out from git
+  // We wait a bit here to ensure the git-sync container has time to
+  // check out the file before we try to open it
+
+  sleep(new Duration(seconds: 20));
 
   createPolicies(policyFile, policyAdmin);
 }
@@ -54,8 +60,10 @@ main(List<String> arguments) async {
 createPolicies(String policyFile, PolicyAdmin policyAdmin) {
   var yml = new File(policyFile).readAsStringSync();
 
+  log.info("Loading policies: \n $yml");
+
   var p = loadYaml(yml);
-  log.info("Loaded yml = $p");
+  log.fine("Loaded yml = $p");
 
   p.forEach((o) async {
     var j = JSON.encode(o);

@@ -21,7 +21,7 @@ class _AuthenticatedClient extends BaseClient {
     //request.headers["Set-Cookie"] = _ipro.toString();
     request.headers["Cookie"] = "iPlanetDirectoryPro=${_tokenId}";
     request.headers["Content-Type"] = "application/json";
-    log.info("Headers = ${request.headers}");
+    log.finest("Headers = ${request.headers}");
 
     return _inner.send(request);
   }
