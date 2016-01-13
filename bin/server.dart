@@ -20,7 +20,7 @@ main(List<String> arguments) async {
   var openam_user = env['OPENAM_USER'];
   var pw_file = env['OPENAM_PW_FILE'];
 
-  if (pw_file == null) pw_file == "/secrets/amadmin.pw";
+  if (pw_file == null) pw_file = "/secrets/amadmin.pw";
 
   var policyFile = env['POLICY_FILE'];
   if (policyFile == null) policyFile = "/config/openam/policies.yaml";
