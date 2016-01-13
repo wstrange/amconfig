@@ -29,7 +29,7 @@ main(List<String> arguments) async {
     throw "Environment variables OPENAM_USER, OPENAM_URL must be set";
   }
 
-  var pw = new File(pw_file).readAsStringSync();
+  var pw = new File(pw_file).readAsStringSync().trim();
 
   var am = new AMConnection(openam_user, pw, Uri.parse(openam_url));
 
