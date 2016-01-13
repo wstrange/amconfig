@@ -23,7 +23,7 @@ main(List<String> arguments) async {
   if (pw_file == null) pw_file == "/secrets/amadmin.pw";
 
   var policyFile = env['POLICY_FILE'];
-  if (policyFile == null) policyFile = "/config/openam/policies/yaml";
+  if (policyFile == null) policyFile = "/config/openam/policies.yaml";
 
   if (openam_url == null || openam_user == null) {
     throw "Environment variables OPENAM_USER, OPENAM_URL must be set";
